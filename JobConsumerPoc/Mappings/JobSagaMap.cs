@@ -1,6 +1,5 @@
 ﻿using FluentNHibernate.Mapping;
 using MassTransit.JobService.Components.StateMachines;
-using NHibernate.Linq;
 
 namespace JobConsumerPoc.Mappings
 {
@@ -10,18 +9,19 @@ namespace JobConsumerPoc.Mappings
         {
             Schema("dbo");
             Table("JobSaga");
+            Not.LazyLoad();
             Id(x => x.CorrelationId);
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.Submitted).Nullable();
-            Map(x => x.ServiceAddress).Nullable().MappedAs(new NHibernate.Type.UriType());
-            Map(x => x.JobTimeout).Nullable().MappedAs(new NHibernate.Type.TimeSpanType());
+            Map(x => x.ServiceAddress).Nullable().CustomType<NHibernate.Type.UriType>();
+            Map(x => x.JobTimeout).Nullable().CustomType<NHibernate.Type.TimeSpanType>();
             Map(x => x.Job).CustomType<JsonDictionary<string, object>>().Nullable();
             Map(x => x.JobTypeId).Not.Nullable();
             Map(x => x.AttemptId).Not.Nullable();
             Map(x => x.RetryAttempt).Not.Nullable();
             Map(x => x.Started).Nullable();
             Map(x => x.Completed).Nullable();
-            Map(x => x.Duration).Nullable().MappedAs(new NHibernate.Type.TimeSpanType());
+            Map(x => x.Duration).Nullable().CustomType<NHibernate.Type.TimeSpanType>();
             Map(x => x.Faulted).Nullable();
             Map(x => x.Reason).Nullable();
             Map(x => x.JobSlotWaitToken).Nullable();

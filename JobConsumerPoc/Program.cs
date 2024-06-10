@@ -1,3 +1,5 @@
+using FluentNHibernate.Cfg;
+using FluentNHibernate.Cfg.Db;
 using JobConsumerPoc.Consumers;
 using JobConsumerPoc.Mappings;
 using MassTransit;
@@ -106,22 +108,28 @@ namespace JobConsumerPoc
 
         public static void ConfigureNHibernate(IServiceCollection services, IConfiguration configuration)
         {
-            var mapper = new ModelMapper();
-            mapper.AddMappings([typeof(JobSagaMap), typeof(JobAttemptSagaMap), typeof(JobTypeSagaMap)]);
-            var domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
+            //var mapper = new ModelMapper();
+            //mapper.AddMappings([typeof(JobSagaMap), typeof(JobAttemptSagaMap), typeof(JobTypeSagaMap)]);
+            //var domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 
-            var dbConfiguration = new Configuration();
-            dbConfiguration.DataBaseIntegration(c =>
-            {
-                c.Dialect<MsSql2012Dialect>();
-                c.Driver<MicrosoftDataSqlClientDriver>();
-                c.ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
-                c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-                c.SchemaAction = SchemaAutoAction.Validate;
-            });
-            dbConfiguration.AddMapping(domainMapping);
+            //var dbConfiguration = new Configuration();
+            //dbConfiguration.DataBaseIntegration(c =>
+            //{
+            //    c.Dialect<MsSql2012Dialect>();
+            //    c.Driver<MicrosoftDataSqlClientDriver>();
+            //    c.ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
+            //    c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
+            //    c.SchemaAction = SchemaAutoAction.Validate;
+            //});
+            //dbConfiguration.AddMapping(domainMapping);
 
-            var sessionFactory = dbConfiguration.BuildSessionFactory();
+            var sessionFactory = Fluently.Configure()
+                .Database(SQLiteConfiguration.Standard
+                    .ConnectionString(configuration.GetConnectionString("DatabaseConnectionString"))
+                    .Driver<MicrosoftDataSqlClientDriver>()
+                    .Dialect<MsSql2012Dialect>())
+                .Mappings(m => m.FluentMappings.AddFromAssemblyOf<JobSagaMap>())
+                .BuildSessionFactory();
             services.AddSingleton(sessionFactory);
             services.AddScoped(factory => sessionFactory.OpenSession());
         }
