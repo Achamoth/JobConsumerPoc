@@ -5,10 +5,8 @@ using JobConsumerPoc.Mappings;
 using MassTransit;
 using MassTransit.Definition;
 using MassTransit.JobService.Components.StateMachines;
-using NHibernate.Cfg;
 using NHibernate.Dialect;
 using NHibernate.Driver;
-using NHibernate.Mapping.ByCode;
 
 namespace JobConsumerPoc
 {
@@ -108,21 +106,6 @@ namespace JobConsumerPoc
 
         public static void ConfigureNHibernate(IServiceCollection services, IConfiguration configuration)
         {
-            //var mapper = new ModelMapper();
-            //mapper.AddMappings([typeof(JobSagaMap), typeof(JobAttemptSagaMap), typeof(JobTypeSagaMap)]);
-            //var domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
-
-            //var dbConfiguration = new Configuration();
-            //dbConfiguration.DataBaseIntegration(c =>
-            //{
-            //    c.Dialect<MsSql2012Dialect>();
-            //    c.Driver<MicrosoftDataSqlClientDriver>();
-            //    c.ConnectionString = configuration.GetConnectionString("DatabaseConnectionString");
-            //    c.KeywordsAutoImport = Hbm2DDLKeyWords.AutoQuote;
-            //    c.SchemaAction = SchemaAutoAction.Validate;
-            //});
-            //dbConfiguration.AddMapping(domainMapping);
-
             var sessionFactory = Fluently.Configure()
                 .Database(SQLiteConfiguration.Standard
                     .ConnectionString(configuration.GetConnectionString("DatabaseConnectionString"))
