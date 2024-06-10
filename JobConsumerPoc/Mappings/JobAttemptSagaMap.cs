@@ -1,5 +1,6 @@
 ﻿using FluentNHibernate.Mapping;
 using MassTransit.JobService.Components.StateMachines;
+using NHibernate.Linq;
 
 namespace JobConsumerPoc.Mappings
 {
@@ -13,8 +14,8 @@ namespace JobConsumerPoc.Mappings
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.JobId).Not.Nullable();
             Map(x => x.RetryAttempt).Not.Nullable();
-            Map(x => x.ServiceAddress).Not.Nullable();
-            Map(x => x.InstanceAddress).Not.Nullable();
+            Map(x => x.ServiceAddress).Not.Nullable().MappedAs(new NHibernate.Type.UriType());
+            Map(x => x.InstanceAddress).Not.Nullable().MappedAs(new NHibernate.Type.UriType());
             Map(x => x.Started).Nullable();
             Map(x => x.Faulted).Nullable();
             Map(x => x.StatusCheckTokenId).Nullable();

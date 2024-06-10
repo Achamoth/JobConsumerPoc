@@ -8,7 +8,7 @@ namespace JobConsumerPoc.Mappings
         public JobTypeSagaMap()
         {
             Schema("dbo");
-            Table("JobSaga");
+            Table("JobTypeSaga");
             Id(x => x.CorrelationId);
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.ActiveJobCount).Not.Nullable();

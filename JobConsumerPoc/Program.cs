@@ -107,7 +107,7 @@ namespace JobConsumerPoc
         public static void ConfigureNHibernate(IServiceCollection services, IConfiguration configuration)
         {
             var mapper = new ModelMapper();
-            mapper.AddMappings(new[] { typeof(JobSagaMap) });
+            mapper.AddMappings([typeof(JobSagaMap), typeof(JobAttemptSagaMap), typeof(JobTypeSagaMap)]);
             var domainMapping = mapper.CompileMappingForAllExplicitlyAddedEntities();
 
             var dbConfiguration = new Configuration();
