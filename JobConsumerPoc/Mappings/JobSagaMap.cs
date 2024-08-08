@@ -10,7 +10,7 @@ namespace JobConsumerPoc.Mappings
             Schema("dbo");
             Table("JobSaga");
             Not.LazyLoad();
-            Id(x => x.CorrelationId);
+            Id(x => x.CorrelationId).GeneratedBy.Assigned();
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.Submitted).Nullable();
             Map(x => x.ServiceAddress).Nullable().CustomType<NHibernate.Type.UriType>();

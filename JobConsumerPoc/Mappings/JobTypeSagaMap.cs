@@ -10,7 +10,7 @@ namespace JobConsumerPoc.Mappings
             Schema("dbo");
             Table("JobTypeSaga");
             Not.LazyLoad();
-            Id(x => x.CorrelationId);
+            Id(x => x.CorrelationId).GeneratedBy.Assigned();
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.ActiveJobCount).Not.Nullable();
             Map(x => x.ConcurrentJobLimit).Not.Nullable();

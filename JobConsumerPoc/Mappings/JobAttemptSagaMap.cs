@@ -10,7 +10,7 @@ namespace JobConsumerPoc.Mappings
             Schema("dbo");
             Table("JobAttemptSaga");
             Not.LazyLoad();
-            Id(x => x.CorrelationId);
+            Id(x => x.CorrelationId).GeneratedBy.Assigned();
             Map(x => x.CurrentState).Not.Nullable();
             Map(x => x.JobId).Not.Nullable();
             Map(x => x.RetryAttempt).Not.Nullable();
