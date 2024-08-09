@@ -19,8 +19,15 @@ namespace JobConsumerPoc
 
         public Task PreConsume<T>(ConsumeContext<T> context) where T : class
         {
-            if (context.Message is TestMessage || context.Message is StartJob)
+            if (context.Message is TestMessage)
             {
+                Console.WriteLine($"Inside consume observer {context.GetType()}");
+                var identity = new ClaimsIdentity($"{context.GetType()}", $"{context.GetType()}", "Role");
+                Thread.CurrentPrincipal = new ClaimsPrincipal(identity);
+            }
+            else if (context.Message is StartJob)
+            {
+                var startJob = context.Message as StartJob;
                 Console.WriteLine($"Inside consume observer {context.GetType()}");
                 var identity = new ClaimsIdentity($"{context.GetType()}", $"{context.GetType()}", "Role");
                 Thread.CurrentPrincipal = new ClaimsPrincipal(identity);
