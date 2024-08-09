@@ -38,6 +38,7 @@ namespace JobConsumerPoc
                     {
                         cfg.UseDelayedMessageScheduler();
                         cfg.Host(defaultBusConnectionString);
+                        cfg.ConnectConsumeObserver(new MassTransitConsumeObserver());
 
                         cfg.ServiceInstance(instance =>
                         {
@@ -61,6 +62,7 @@ namespace JobConsumerPoc
                     {
                         cfg.UseDelayedMessageScheduler();
                         cfg.Host(defaultBusConnectionString);
+                        cfg.ConnectConsumeObserver(new MassTransitConsumeObserver());
 
                         cfg.ServiceInstance(instance =>
                         {

@@ -6,8 +6,9 @@ namespace JobConsumerPoc.Consumers
     {
         public async Task Run(JobContext<JobMessage> context)
         {
-            Console.WriteLine("Inside JobConsumer");
-            await Task.Delay(context.Job.FreezeDuration);
+            var principal = Thread.CurrentPrincipal;
+            Console.WriteLine($"Inside JobConsumer {Thread.CurrentPrincipal.Identity.AuthenticationType}");
+            //await Task.Delay(context.Job.FreezeDuration);
             Console.WriteLine("Finished JobConsumer");
         }
     }

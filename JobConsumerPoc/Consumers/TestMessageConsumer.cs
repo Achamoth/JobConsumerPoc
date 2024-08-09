@@ -1,6 +1,5 @@
 ﻿using JobConsumerPoc.Controllers;
 using MassTransit;
-using MassTransit.Contracts.JobService;
 using ISession = NHibernate.ISession;
 
 namespace JobConsumerPoc.Consumers
@@ -26,13 +25,15 @@ namespace JobConsumerPoc.Consumers
 
         public async Task Consume(ConsumeContext<TestMessage> context)
         {
-            _logger.LogInformation($"Message received: {context.Message.Test}");
+            var principal = Thread.CurrentPrincipal;
+            _logger.LogInformation($"Message received: {context.Message.Test} {Thread.CurrentPrincipal.Identity.AuthenticationType}");
             try
             {
-                var response = await _requestClient.GetResponse<JobSubmissionAccepted>(new JobMessage
-                {
-                    FreezeDuration = TimeSpan.FromMinutes(1)
-                });
+                // Use request client if you want to be able to track the job
+                //var response = await _requestClient.GetResponse<JobSubmissionAccepted>(new JobMessage
+                //{
+                //    FreezeDuration = TimeSpan.FromMinutes(1)
+                //});
                 await _bus.Publish(new JobMessage { FreezeDuration = TimeSpan.FromMinutes(1) });
                 _logger.LogInformation("Request created.");
             }
